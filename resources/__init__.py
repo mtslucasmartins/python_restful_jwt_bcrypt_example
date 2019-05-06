@@ -1,4 +1,4 @@
-from models import UserModel
+from models.user import UserModel
 
 from flask_restful import Resource, reqparse
 

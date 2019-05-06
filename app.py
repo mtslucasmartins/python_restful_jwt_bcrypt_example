@@ -4,12 +4,14 @@ from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 from libs.strings import gettext
 
-from models import UserModel
+from models.user import UserModel
 
 import resources
+from resources import signup as signup_resource
 from resources import user as user_resource
 from resources import auth as auth_resource
 
@@ -25,12 +27,12 @@ jwt = JWTManager(application)
 
 db.init_app(application)
 
+CORS(application)
 
 @application.before_first_request
 def create_tables():
-    print('asd')
+    print('Creating Tables...')
     db.create_all()
-
 
 # @jwt.user_claims_loader
 # def add_claims_to_jwt(identity):
@@ -80,9 +82,25 @@ def revoked_token_callback():
 import views
 
 
+
+# Request Token
+api.add_resource(signup_resource.SignUp, '/signup')
+
 # Users
 api.add_resource(user_resource.Users, '/users')
-api.add_resource(user_resource.User, '/users/<string:username>')
+api.add_resource(user_resource.User, '/users/<string:id>')
+
+# Clinics
+# api.add_resource(user_resource.Users, '/clinics')
+# api.add_resource(user_resource.User, '/clinics/<string:id>')
+
+# Consultations
+# api.add_resource(user_resource.Users, '/clinics')
+# api.add_resource(user_resource.User, '/clinics/<string:id>')
+
+# Operator - HealthPlanOperators 
+# api.add_resource(user_resource.Users, '/clinics')
+# api.add_resource(user_resource.User, '/clinics/<string:id>')
 
 # Request Token
 api.add_resource(auth_resource.AuthAccessToken, '/auth/token')
