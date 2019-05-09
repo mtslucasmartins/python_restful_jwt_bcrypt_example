@@ -1,3 +1,5 @@
+
+from flask import jsonify
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (
     create_access_token, create_refresh_token, jwt_required, 
@@ -25,7 +27,10 @@ class AuthAccessToken(Resource):
         current_user = UserModel.find_by_email(username)
     
         if not current_user:
-            return { 'status': 'error', 'message': 'User {} doesn\'t exist'.format(username) }
+            return ({
+                'description': gettext("security_invalid_credentials"),
+                'error': 'invalid_credentials'
+            }, 401)
 
         if UserModel.verify_hash(password, current_user.password):
             access_token = create_access_token(identity=username)
@@ -35,7 +40,11 @@ class AuthAccessToken(Resource):
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }    
-        return { 'status': 'error', 'message': 'Bad credentials' }
+
+        return ({
+            'description': gettext("security_request_without_token"),
+            'error': 'invalid_credentials'
+        }, 401)
       
 
 class AuthRefreshToken(Resource):

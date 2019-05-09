@@ -2,6 +2,8 @@ import os
 
 # Application
 SECRET_KEY = os.urandom(24)
+HOST = os.environ.get('HOST', '0.0.0.0')
+PORT = os.environ.get('PORT', 5000)
 
 # Database
 SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'

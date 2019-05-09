@@ -3,9 +3,12 @@ import datetime as dt
 
 # Application
 SECRET_KEY = os.urandom(24)
+HOST = os.environ.get('HOST', '0.0.0.0')
+PORT = os.environ.get('PORT', 5000)
+
 
 # Database
-SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI', 'sqlite:///app.db')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_ECHO = True
 

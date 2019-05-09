@@ -1,3 +1,4 @@
+from config import HOST, PORT
 from database import db
 
 from flask import Flask, jsonify
@@ -114,4 +115,4 @@ api.add_resource(resources.SecretResource, '/secret')
 
 
 if __name__ == "__main__":
-    application.run(debug=True, host="0.0.0.0", port=5000)
+    application.run(debug=True, host=HOST, port=PORT)
